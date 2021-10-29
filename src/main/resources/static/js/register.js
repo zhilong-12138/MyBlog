@@ -23,7 +23,7 @@
     //手机号输入框失去焦点
     phone.blur(function () {
         var phone_value = phone.val();
-        var pattren = /^1[345789]\d{9}$/;
+        var pattren = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
         var phone_len = phone_value.length;
         if(phone_len === 0){
             phone_null.css("display","block");

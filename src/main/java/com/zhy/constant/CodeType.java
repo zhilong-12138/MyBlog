@@ -49,7 +49,7 @@ public enum CodeType {
     COMMENT_BLANK(801, "内容为空"),
     MESSAGE_HAS_THUMBS_UP(802, "已经点过赞了"),
 
-    PHONE_ERROR(901, "手机号错误"),
+    PHONE_ERROR(901, "邮箱格式错误错误"),
     AUTH_CODE_ERROR(902, "验证码错误"),
     PHONE_EXIST(903, "手机号存在"),
     ;

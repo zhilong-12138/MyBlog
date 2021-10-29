@@ -153,7 +153,7 @@ var password = $('#password');
 var surePassword = $('#surePassword');
 
 phone.blur(function () {
-    var pattren = /^1[345789]\d{9}$/;
+    var pattren = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
     var phoneValue = phone.val();
     if(pattren.test(phoneValue)){
         phone.removeClass("wrong");

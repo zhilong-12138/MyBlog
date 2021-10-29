@@ -42,7 +42,7 @@
                     <form th:action="@{/login}" method="post" class="am-form" >
                         <div  class="loginInput am-input-group am-u-lg-10 col-md-offset-2 am-form-icon am-form-feedback" style="margin-left: 0">
                             <div class="am-input-group-label"><i class="fa fa-phone fa-lg"></i></div>
-                            <input type="text" name="username" class="am-form-field" id="phone" placeholder="客官，这里输入手机号哦">
+                            <input type="text" name="username" class="am-form-field" id="phone" placeholder="客官，这里输入邮箱哦">
                             <span id="phone_null" class="icons am-icon-warning" style="color: orange"></span>
                             <span id="phone_error" class="icons am-icon-times" style="color: red"></span>
                         </div>
@@ -135,6 +135,7 @@
     <!--引入共有底部-->
     <div th:replace="footer :: footer"></div>
     <!--消息盒子+反馈-->
+
     <div th:replace="other :: other"></div>
 </div>
 

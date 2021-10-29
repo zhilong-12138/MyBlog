@@ -14,7 +14,7 @@ public class Article {
 
     private int id;
 
-    /**
+    /** 
      * 文章id
      */
     private long articleId;

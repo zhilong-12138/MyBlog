@@ -31,11 +31,11 @@ public class ArchiveServiceImpl implements ArchiveService {
         JSONArray archivesJsonArray = new JSONArray();
         JSONObject archiveJson;
         TimeUtil timeUtil = new TimeUtil();
-        for(String archiveName : archives){
+        for (String archiveName : archives) {
             archiveJson = new JSONObject();
-            archiveJson.put("archiveName",archiveName);
+            archiveJson.put("archiveName", archiveName);
             archiveName = timeUtil.timeYearToWhippletree(archiveName);
-            archiveJson.put("archiveArticleNum",articleService.countArticleArchiveByArchive(archiveName));
+            archiveJson.put("archiveArticleNum", articleService.countArticleArchiveByArchive(archiveName));
             archivesJsonArray.add(archiveJson);
         }
         JSONObject returnJson = new JSONObject();
@@ -46,9 +46,8 @@ public class ArchiveServiceImpl implements ArchiveService {
     @Override
     public void addArchiveName(String archiveName) {
         int archiveNameIsExist = archiveMapper.findArchiveNameByArchiveName(archiveName);
-        if(archiveNameIsExist == 0){
+        if (archiveNameIsExist == 0) {
             archiveMapper.save(archiveName);
         }
     }
-
 }

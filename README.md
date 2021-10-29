@@ -1,7 +1,5 @@
 # MyBlog
 
-#### 项目链接：[www.zhyocean.cn](https://www.zhyocean.cn)
-
 #### 关于本地开发
 
 可直接导入该项目于本地，修改配置文件中的数据库连接信息，导入附带数据库结构的SQL文件可直接生成所有表，项目中使用到的关于阿里云功能还需开发者自行前往阿里云进行相应功能开通。
@@ -10,7 +8,7 @@
 
 
 
-docker 安装redis 
+#### docker 安装redis 
 
 1.安装最新版
 
@@ -46,6 +44,35 @@ docker exec -it 96f8a5e48782 /bin/bash
 
 ```
 redis-cli
+```
+
+7.设置密码
+
+```shell
+#查看密码
+config get requirepass
+#设置密码
+config set requirepass redisroot
+```
+
+
+
+#### 安装oss文件服务器
+
+```
+docker pull minio/minio:RELEASE.2021-06-17T00-10-46Z
+
+docker run -p 9090:9000 --name minio -e "MINIO_ACCESS_KEY=admin" -e "MINIO_SECRET_KEY=admin123456" -v /mydata/minio/data:/data   -v /mydata/minio/config:/root/.minio -d minio/minio server /data --console-address ":9000" --address ":9090"
+
+docker run -d -p 9000:9000 --name minio\
+  -e "MINIO_ACCESS_KEY=admin" \
+  -e "MINIO_SECRET_KEY=admin1973984292@qq.com" \
+  -v /data/minio/data:/data \
+  -v /data/minio/config:/root/.minio \
+  minio/minio:RELEASE.2021-06-17T00-10-46Z server /data
+
+Access Key: PX4DMSUD0TXO3F0OLLER
+Secret Key: hOqY5E8R0dx+Mlynj4RdPCTSz9Yq4x09MOmNu4S8
 ```
 
 

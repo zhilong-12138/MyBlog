@@ -10,6 +10,7 @@ import com.zhy.component.PhoneRandomBuilder;
 import com.zhy.redis.StringRedisServiceImpl;
 import com.zhy.utils.JsonResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -50,17 +51,17 @@ public class GetPhoneCodeControl {
 
     @PostMapping(value = "/getCode", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String getAuthCode(@RequestParam("phone") String phone,
-                              @RequestParam("sign") String sign){
+                              @RequestParam("sign") String sign) {
 
         String trueMsgCode = PhoneRandomBuilder.randomBuilder();
 
-       //在redis中保存手机号验证码并设置过期时间
+        //在redis中保存手机号验证码并设置过期时间
         stringRedisService.set(phone, trueMsgCode);
         stringRedisService.expire(phone, 300);
 
         String msgCode;
         //注册的短信模板
-        if(REGISTER.equals(sign)){
+        if (REGISTER.equals(sign)) {
             msgCode = "SMS_136394413";
         }
         //改密码的短信模板
@@ -69,7 +70,8 @@ public class GetPhoneCodeControl {
         }
 
         try {
-            sendSmsResponse(phone, trueMsgCode, msgCode);
+            //sendSmsResponse(phone, trueMsgCode, msgCode);
+            this.sendEmailResponse(phone, trueMsgCode);
         } catch (ClientException e) {
             log.error("[{}] send phone message exception", phone, e);
             return JsonResult.fail().toJSON();
@@ -100,6 +102,29 @@ public class GetPhoneCodeControl {
 
     }
 
+    private void sendEmailResponse(String emailaddress, String code) throws ClientException {
+        try {
+            //不用更改
+            HtmlEmail email = new HtmlEmail();
+            //需要修改，126邮箱为smtp.126.com,163邮箱为163.smtp.com，QQ为smtp.qq.com
+            email.setHostName("smtp.qq.com");
+            email.setCharset("UTF-8");
+            // 收件地址
+            email.addTo(emailaddress);
 
+            //此处填邮箱地址和用户名,用户名可以任意填写
+            email.setFrom("jackz.zl@qq.com", "zhiLong-blog");
+            //此处填写邮箱地址和客户端授权码
+            email.setAuthentication("1356217823@qq.com", "khcoxkjquleyjdej");
+
+            //此处填写邮件名，邮件名可任意填写
+            email.setSubject("感谢您注册周志龙的博客网站");
+            //此处填写邮件内容
+            email.setMsg("尊敬的用户您好,您本次注册的验证码是:" + code);
+            email.send();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }

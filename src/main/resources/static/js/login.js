@@ -14,7 +14,7 @@
             phone_null.show();
         }
         if(phone_len !== 0){
-            var pattren = /^1[345789]\d{9}$/;
+            var pattren = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
             var phone_value = phone.val();
             if(!pattren.test(phone_value)){
                 phone_error.show();
@@ -36,11 +36,11 @@
         var password_len = password.val().length;
         var phone_len = phone.val().length;
         var phone_value = phone.val();
-        var pattren1 = /^1[345789]\d{9}$/;
+        var pattren1 = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
 
         var isPhone = checkPhone(phone_value);
         if(!isPhone){
-            alert("手机号输入有误");
+            alert("邮箱输入格式有误");
             return false;
         }
         console.log(isPhone);
@@ -80,7 +80,7 @@
             modal_phone.addClass("phone_error");
         }
         if(modal_phone_len !== 0){
-            var pattren1 = /^1[345789]\d{9}$/;
+            var pattren1 = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
             if(!pattren1.test(modal_phone_value)){
                 modal_phone_error.show();
                 modal_phone.removeClass("phone_success");
@@ -268,7 +268,7 @@
     });
 
     function checkPhone(phone){
-        if(!(/^1[3456789]\d{9}$/.test(phone))){
+        if(!(/^\w+@[a-z0-9]+\.[a-z]{2,4}$/.test(phone))){
             return false;
         }
         return true;
