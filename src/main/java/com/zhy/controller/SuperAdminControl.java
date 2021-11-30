@@ -54,17 +54,22 @@ public class SuperAdminControl {
     @Autowired
     private RewardService rewardService;
 
+    @Autowired
+    private AnnouncementService announcementService;
+
+
     /**
      * 获得所有悄悄话
+     *
      * @return
      */
     @PostMapping(value = "/getAllPrivateWord", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getAllPrivateWord(){
+    public String getAllPrivateWord() {
         try {
             DataMap data = privateWordService.getAllPrivateWord();
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Get all private word exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -72,18 +77,19 @@ public class SuperAdminControl {
 
     /**
      * 回复悄悄话
+     *
      * @return
      */
     @PostMapping(value = "/replyPrivateWord", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
     public String replyPrivateWord(@AuthenticationPrincipal Principal principal,
-                                       @RequestParam("replyContent") String replyContent,
-                                       @RequestParam("replyId") String id){
+                                   @RequestParam("replyContent") String replyContent,
+                                   @RequestParam("replyId") String id) {
         String username = principal.getName();
         try {
             DataMap data = privateWordService.replyPrivateWord(replyContent, username, Integer.parseInt(id));
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("[{}] Reply [{}] private word [{}] exception", username, id, replyContent, e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -92,17 +98,18 @@ public class SuperAdminControl {
 
     /**
      * 分页获得所有反馈信息
-     * @param rows 一页大小
+     *
+     * @param rows    一页大小
      * @param pageNum 当前页
      */
     @GetMapping(value = "/getAllFeedback", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
     public String getAllFeedback(@RequestParam("rows") int rows,
-                                     @RequestParam("pageNum") int pageNum){
+                                 @RequestParam("pageNum") int pageNum) {
         try {
             DataMap data = feedBackService.getAllFeedback(rows, pageNum);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Get all feedback exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -110,11 +117,12 @@ public class SuperAdminControl {
 
     /**
      * 获得统计信息
+     *
      * @return
      */
     @GetMapping(value = "/getStatisticsInfo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getStatisticsInfo(){
+    public String getStatisticsInfo() {
         try {
             Map<String, Object> dataMap = new HashMap<>(8);
             Long totalVisitor = redisService.getVisitorNumOnRedis(StringUtil.VISITOR, "totalVisitor");
@@ -123,7 +131,7 @@ public class SuperAdminControl {
             dataMap.put("allUser", userService.countUserNum());
             dataMap.put("yesterdayVisitor", yesterdayVisitor);
             dataMap.put("articleNum", articleService.countArticle());
-            if(stringRedisService.hasKey(StringUtil.ARTICLE_THUMBS_UP)){
+            if (stringRedisService.hasKey(StringUtil.ARTICLE_THUMBS_UP)) {
                 int articleThumbsUp = (int) stringRedisService.get(StringUtil.ARTICLE_THUMBS_UP);
                 dataMap.put("articleThumbsUpNum", articleThumbsUp);
             } else {
@@ -131,7 +139,7 @@ public class SuperAdminControl {
             }
             DataMap data = DataMap.success().setData(dataMap);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Get statistics info exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -139,16 +147,17 @@ public class SuperAdminControl {
 
     /**
      * 获得文章管理
+     *
      * @return
      */
     @PostMapping(value = "/getArticleManagement", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
     public String getArticleManagement(@RequestParam("rows") int rows,
-                                           @RequestParam("pageNum") int pageNum){
+                                       @RequestParam("pageNum") int pageNum) {
         try {
             DataMap data = articleService.getArticleManagement(rows, pageNum);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Get article management exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -156,18 +165,19 @@ public class SuperAdminControl {
 
     /**
      * 删除文章
+     *
      * @param id 文章id
      */
     @GetMapping(value = "/deleteArticle", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String deleteArticle(@RequestParam("id") String id){
+    public String deleteArticle(@RequestParam("id") String id) {
         try {
-            if(StringUtil.BLANK.equals(id) || id == null){
+            if (StringUtil.BLANK.equals(id) || id == null) {
                 return JsonResult.build(DataMap.fail(CodeType.DELETE_ARTICLE_FAIL)).toJSON();
             }
             DataMap data = articleService.deleteArticle(Long.parseLong(id));
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Delete article [{}] exception", id, e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -179,11 +189,11 @@ public class SuperAdminControl {
     @PostMapping(value = "/getArticleThumbsUp", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
     public String getArticleThumbsUp(@RequestParam("rows") int rows,
-                                         @RequestParam("pageNum") int pageNum){
+                                     @RequestParam("pageNum") int pageNum) {
         try {
             DataMap data = articleLikesRecordService.getArticleThumbsUp(rows, pageNum);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Get article thumbsUp exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -194,11 +204,11 @@ public class SuperAdminControl {
      */
     @GetMapping(value = "/readThisThumbsUp", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String readThisThumbsUp(@RequestParam("id") int id){
+    public String readThisThumbsUp(@RequestParam("id") int id) {
         try {
             DataMap data = articleLikesRecordService.readThisThumbsUp(id);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Read one thumbsUp [{}] exception", id, e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -209,11 +219,11 @@ public class SuperAdminControl {
      */
     @GetMapping(value = "/readAllThumbsUp", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String readAllThumbsUp(){
+    public String readAllThumbsUp() {
         try {
             DataMap data = articleLikesRecordService.readAllThumbsUp();
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Read all thumbsUp exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -224,11 +234,11 @@ public class SuperAdminControl {
      */
     @GetMapping(value = "/getArticleCategories", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getArticleCategories(){
+    public String getArticleCategories() {
         try {
             DataMap data = categoryService.findAllCategories();
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Get article categories exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -239,12 +249,12 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/updateCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String updateCategory(@RequestParam("categoryName") String  categoryName,
-                              @RequestParam("type") int type){
+    public String updateCategory(@RequestParam("categoryName") String categoryName,
+                                 @RequestParam("type") int type) {
         try {
             DataMap data = categoryService.updateCategory(categoryName, type);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Update type [{}] article categories [{}] exception", type, categoryName, e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -255,11 +265,11 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/getFriendLink", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getFriendLink(){
+    public String getFriendLink() {
         try {
             DataMap data = friendLinkService.getAllFriendLink();
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Get friendLink exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -272,17 +282,17 @@ public class SuperAdminControl {
     @PermissionCheck(value = "ROLE_SUPERADMIN")
     public String addFriendLink(@RequestParam("id") String id,
                                 @RequestParam("blogger") String blogger,
-                                @RequestParam("url") String url){
+                                @RequestParam("url") String url) {
         try {
             FriendLink friendLink = new FriendLink(blogger, url);
             DataMap data;
-            if(StringUtil.BLANK.equals(id)){
+            if (StringUtil.BLANK.equals(id)) {
                 data = friendLinkService.addFriendLink(friendLink);
             } else {
                 data = friendLinkService.updateFriendLink(friendLink, Integer.parseInt(id));
             }
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Update friendLink [{}] exception", blogger, e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -293,11 +303,11 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/deleteFriendLink", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String deleteFriendLink(@RequestParam("id") int id){
+    public String deleteFriendLink(@RequestParam("id") int id) {
         try {
             DataMap data = friendLinkService.deleteFriendLink(id);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Delete friendLink [{}] exception", id, e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -310,7 +320,7 @@ public class SuperAdminControl {
     @PermissionCheck(value = "ROLE_SUPERADMIN")
     public String addReward(@RequestParam("file") MultipartFile file,
                             HttpServletRequest request,
-                            Reward reward){
+                            Reward reward) {
 
         try {
             //获得募捐时间
@@ -328,19 +338,19 @@ public class SuperAdminControl {
 
             reward.setRewardDate(timeUtil.stringToDateThree(rewardDate));
             //募捐去处处理
-            if(reward.getFundraisingPlace().indexOf("《") == 0 && reward.getFundraisingPlace().indexOf("》") == reward.getFundraisingPlace().length()-1){
+            if (reward.getFundraisingPlace().indexOf("《") == 0 && reward.getFundraisingPlace().indexOf("》") == reward.getFundraisingPlace().length() - 1) {
                 reward.setFundraisingPlace(reward.getFundraisingPlace());
             } else {
-                reward.setFundraisingPlace("《"+reward.getFundraisingPlace()+"》");
+                reward.setFundraisingPlace("《" + reward.getFundraisingPlace() + "》");
             }
             reward.setRewardUrl(fileUrl);
-            if(reward.getRemarks() == null || StringUtil.BLANK.equals(reward.getRemarks().trim())){
+            if (reward.getRemarks() == null || StringUtil.BLANK.equals(reward.getRemarks().trim())) {
                 reward.setRemarks("无");
             }
 
             DataMap data = rewardService.save(reward);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Add reward [{}] exception", reward, e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
@@ -351,12 +361,33 @@ public class SuperAdminControl {
      */
     @GetMapping(value = "/deleteReward", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public  String deleteReward(@RequestParam("id") int id){
+    public String deleteReward(@RequestParam("id") int id) {
         try {
             DataMap data = rewardService.deleteReward(id);
             return JsonResult.build(data).toJSON();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Delete reward [{}] exception", id, e);
+        }
+        return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
+    }
+
+
+    /**
+     * 获得轮播公告数据
+     *
+     * @param rows
+     * @param pageNum
+     * @return
+     */
+    @PostMapping(value = "/getAnnouncementManagement", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PermissionCheck(value = "ROLE_SUPERADMIN")
+    public String getAnnouncementManagement(@RequestParam("rows") int rows,
+                                            @RequestParam("pageNum") int pageNum) {
+        try {
+            DataMap<?> data = announcementService.findAll(rows, pageNum);
+            return JsonResult.build(data).toJSON();
+        } catch (Exception e) {
+            log.error("Get article management exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
     }

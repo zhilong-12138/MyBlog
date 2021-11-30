@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>后台管理 | zhiLong</title>
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="https://zhy-myblog.oss-cn-shenzhen.aliyuncs.com/static/img/favicon.ico">
 
@@ -15,12 +15,23 @@
     <link rel="stylesheet" href="css/plugs_paging.css">
     <link href="https://lib.baomitu.com/font-awesome/5.8.0/css/fontawesome.min.css" rel="stylesheet">
 
+    <link href="layui/css/layui.css" rel="stylesheet">
+    <script src="layui/js/layui.js"></script>
+
     <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://lib.baomitu.com/amazeui/2.7.2/js/amazeui.min.js"></script>
     <script src="https://lib.baomitu.com/underscore.js/1.9.1/underscore-min.js"></script>
 </head>
 <body>
-
+<style>
+    .content-class {
+        float: left;
+        left: 36px;
+        top: 7px;
+        position: relative;
+        font-size: 17px;
+    }
+</style>
 <!--引入共有头部-->
 <div th:replace="header :: header"></div>
 
@@ -33,18 +44,39 @@
             <ul class="superAdminList am-list admin-sidebar-list">
                 <li class="superAdminClick statistics"><a><span class="am-icon-home"></span> 仪表盘</a></li>
                 <li class="article admin-parent">
-                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span> 文章管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <a class="am-cf" data-am-collapse="{target: '#collapse-nav'}"><span class="am-icon-file"></span>
+                        文章管理 <span class="am-icon-angle-right am-fr am-margin-right"></span></a>
                     <ul class="am-list am-collapse admin-sidebar-sub am-in" id="collapse-nav">
-                        <li class="superAdminClick articleManagement"><a class="am-cf"><span class="am-icon-check"></span> 文章管理<span class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+                        <li class="superAdminClick articleManagement"><a class="am-cf"><span
+                                class="am-icon-check"></span> 文章管理<span
+                                class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
 
-                        <li class="superAdminClick articleThumbsUp"><a><span class="am-icon-thumbs-up"></span> 点赞管理</a></li>
+                        <li class="superAdminClick articleThumbsUp"><a><span class="am-icon-thumbs-up"></span> 点赞管理</a>
+                        </li>
                         <li class="superAdminClick articleCategories"><a><span class="am-icon-th"></span> 分类管理</a></li>
                     </ul>
                 </li>
+
+                <li class="article admin-parent">
+                    <a class="am-cf" data-am-collapse="{target: '#index-setting-nav'}"><span
+                            class="am-icon-file"></span> 主页管理 <span
+                            class="am-icon-angle-right am-fr am-margin-right"></span></a>
+                    <ul class="am-list am-collapse admin-sidebar-sub am-in" id="index-setting-nav">
+                        <li class="superAdminClick announcementManagement"><a class="am-cf"><span
+                                class="am-icon-check"></span> 轮播公告<span
+                                class="am-icon-star am-fr am-margin-right admin-icon-yellow"></span></a></li>
+
+                        <li class="superAdminClick articleThumbsUp"><a><span class="am-icon-thumbs-up"></span> 点赞管理</a>
+                        </li>
+                        <li class="superAdminClick articleCategories"><a><span class="am-icon-th"></span> 分类管理</a></li>
+                    </ul>
+                </li>
+
                 <li class="superAdminClick friendLink"><a><span class="am-icon-users"></span> 友链管理</a></li>
                 <li class="superAdminClick rewardManagement"><a><span class="am-icon-plus-square"></span> 募捐管理</a></li>
                 <li class="superAdminClick userFeedback"><a><span class="am-icon-table"></span> 反馈</a></li>
-                <li class="superAdminClick privateWord" style="width: 100%"><a><span class="am-icon-pencil-square-o"></span> 悄悄话</a></li>
+                <li class="superAdminClick privateWord" style="width: 100%"><a><span
+                        class="am-icon-pencil-square-o"></span> 悄悄话</a></li>
             </ul>
 
             <div class="am-panel am-panel-default admin-sidebar-panel">
@@ -67,10 +99,15 @@
                         <li class="am-active">仪表盘</li>
                     </ol>
                     <ul class="am-avg-sm-1 am-avg-md-4 am-margin am-padding am-text-center admin-content-list ">
-                        <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-meh-o"></span><br/>总访问量<br/><span class="allVisitor">0</span></a></li>
-                        <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-recycle"></span><br/>昨日访问<br/><span class="yesterdayVisitor">0</span></a></li>
-                        <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-user-md"></span><br/>总用户量<br/><span class="allUser">0</span></a></li>
-                        <li><a href="#" class="am-text-secondary"><span class="am-icon-btn am-icon-file-text"></span><br/>文章量<br/><span class="articleNum">0</span></a></li>
+                        <li><a href="#" class="am-text-success"><span class="am-icon-btn am-icon-meh-o"></span><br/>总访问量<br/><span
+                                class="allVisitor">0</span></a></li>
+                        <li><a href="#" class="am-text-warning"><span class="am-icon-btn am-icon-recycle"></span><br/>昨日访问<br/><span
+                                class="yesterdayVisitor">0</span></a></li>
+                        <li><a href="#" class="am-text-danger"><span class="am-icon-btn am-icon-user-md"></span><br/>总用户量<br/><span
+                                class="allUser">0</span></a></li>
+                        <li><a href="#" class="am-text-secondary"><span
+                                class="am-icon-btn am-icon-file-text"></span><br/>文章量<br/><span
+                                class="articleNum">0</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -87,7 +124,11 @@
                                     <table class="table am-table am-table-bd am-table-striped admin-content-table  am-animation-slide-right">
                                         <thead>
                                         <tr>
-                                            <th>文章标题</th><th>发布时间</th><th>文章分类</th><th>浏览量</th><th>操作</th>
+                                            <th>文章标题</th>
+                                            <th>发布时间</th>
+                                            <th>文章分类</th>
+                                            <th>浏览量</th>
+                                            <th>操作</th>
                                         </tr>
                                         </thead>
                                         <tbody class="tables">
@@ -130,6 +171,58 @@
                     </div>
                 </div>
             </div>
+            <!--================================================公告===================================-->
+            <div class="superFunction" id="announcementManagement">
+                <div class="subject">
+                    <div class="articles">
+                        <div class="am-g">
+                            <div class="am-u-sm-12 " style="padding-left: 0;">
+                                <ol class="am-breadcrumb  am-breadcrumb-slash">
+                                    <li class="am-active am-icon-home"> 后台管理</li>
+                                    <li class="am-active">公告管理</li>
+                                </ol>
+                                <div class="announcementManagementTable">
+                                    <table class="table am-table am-table-bd am-table-striped admin-content-table  am-animation-slide-right">
+                                        <thead>
+                                        <tr>
+                                            <th>序号</th>
+                                            <th>公告内容</th>
+                                            <th>发布时间</th>
+                                            <th>是否显示</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="tables">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--增加公告模态框-->
+            <div class="am-modal am-modal-alert" tabindex="-1" id="addAnnouncementLink">
+                <div class="am-modal-dialog">
+                    <div class="am-modal-hd">添加友链</div>
+
+                    <div class="content-class">内容：</div>
+                    <div class="b"><input id="content" type="text" class="am-modal-prompt-input"></div>
+                    <div>是否显示： </div>
+                    <div class="layui-input-block">
+                        <input type="radio" name="sex" value="0" title="显示" checked="">显示</input>
+                        <input type="radio" name="sex" value="1" title="不显示">不显示</input>
+                    </div>
+                    <div class="am-modal-footer">
+                        <span class="am-modal-btn" data-am-modal-cancel>取消</span>
+                        <span class="sureFriendLinkAddBtn am-modal-btn">确定</span>
+                    </div>
+                </div>
+            </div>
+            <!--================================================公告======================================-->
             <div class="superFunction" id="friendLink">
                 <div class="subject">
                     <div class="friendLinkManagement">
@@ -186,7 +279,8 @@
 
         <footer class="admin-content-footer">
             <hr>
-            <p class="am-padding-left">&copy; 2018-2019 zhiLong - <i class="am-icon-coffee" style="margin: 0 5px"></i>周志龙 版权所有</p>
+            <p class="am-padding-left">&copy; 2018-2019 zhiLong - <i class="am-icon-coffee" style="margin: 0 5px"></i>周志龙
+                版权所有</p>
         </footer>
     </div>
 
@@ -279,11 +373,13 @@
                         </div>
                         <div>
                             <label for="rewardMoney">募捐金额</label>
-                            <input type="number" min="0.00" max="1000.00" step="0.01" class="rewardFormContent" id="rewardMoney" placeholder="输入募捐金额">
+                            <input type="number" min="0.00" max="1000.00" step="0.01" class="rewardFormContent"
+                                   id="rewardMoney" placeholder="输入募捐金额">
                         </div>
                         <div>
                             <label for="reward-date">募捐日期</label>
-                            <input class="formInput" type="text" id="reward-date" data-am-datepicker="{format: 'yyyy-mm-dd', viewMode: 'days'}" placeholder="填写募捐日期"/>
+                            <input class="formInput" type="text" id="reward-date"
+                                   data-am-datepicker="{format: 'yyyy-mm-dd', viewMode: 'days'}" placeholder="填写募捐日期"/>
                         </div>
                         <div>
                             <label for="fundRaisingSources">募捐来源</label>
@@ -303,7 +399,8 @@
 
                         <div>
                             <label for="remarks">备注</label>
-                            <textarea class="rewardFormContent remarks" rows="1" id="remarks" placeholder="要不备注点啥"></textarea>
+                            <textarea class="rewardFormContent remarks" rows="1" id="remarks"
+                                      placeholder="要不备注点啥"></textarea>
                         </div>
                         <div>
                             <label for="file">募捐证书</label>
@@ -335,7 +432,8 @@
 </div>
 
 <!--手机适配显示左侧按钮-->
-<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu" data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
+<a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"
+   data-am-offcanvas="{target: '#admin-offcanvas'}"></a>
 
 <script src="js/all.js"></script>
 <script src="js/plugs_paging.js"></script>
