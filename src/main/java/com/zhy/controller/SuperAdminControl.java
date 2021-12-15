@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -390,5 +391,13 @@ public class SuperAdminControl {
             log.error("Get article management exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
+    }
+
+    @GetMapping(value = "/layui", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PermissionCheck(value = "ROLE_SUPERADMIN")
+    public ModelAndView layui() {
+        ModelAndView m = new ModelAndView();
+        m.setViewName("layui");
+        return m;
     }
 }

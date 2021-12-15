@@ -373,3 +373,16 @@ INSERT INTO `visitor` VALUES ('1', '3228', 'totalVisitor');
 INSERT INTO `visitor` VALUES ('2', '1032', 'visitorVolume');
 INSERT INTO `visitor` VALUES ('3', '42', 'article/1532884460');
 INSERT INTO `visitor` VALUES ('5', '57', 'article/1533196734');
+
+-- ------------------------
+-- Table of announcement
+-- ----------------------------
+CREATE TABLE announcement(
+ `id` INT(10) NOT NULL AUTO_INCREMENT,
+ `content` VARCHAR(200) NOT NULL COMMENT '公共内容',
+ `show_status` INT(1) NOT NULL DEFAULT 0 COMMENT '是否显示:0是 1否',
+ `is_deleted` INT(1) NOT NULL DEFAULT 0,
+ `gmt_create` INT(10) NOT NULL,
+ `gmt_modified` INT(10) NOT NULL,
+ INDEX id_index(id)
+);

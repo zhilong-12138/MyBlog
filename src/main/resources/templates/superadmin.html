@@ -31,6 +31,11 @@
         position: relative;
         font-size: 17px;
     }
+
+    .radio-b {
+        margin-right: 202px;
+        margin-top: 8px;
+    }
 </style>
 <!--引入共有头部-->
 <div th:replace="header :: header"></div>
@@ -182,6 +187,13 @@
                                     <li class="am-active">公告管理</li>
                                 </ol>
                                 <div class="announcementManagementTable">
+                                    <iframe id="layui-iframe" src="/layui"
+                                            style="display: none;width: 100%;height: 1000px;">
+
+                                    </iframe>
+                                </div>
+
+                                <!--<div class="announcementManagementTable">
                                     <table class="table am-table am-table-bd am-table-striped admin-content-table  am-animation-slide-right">
                                         <thead>
                                         <tr>
@@ -196,7 +208,7 @@
 
                                         </tbody>
                                     </table>
-                                </div>
+                                </div>-->
 
                             </div>
                         </div>
@@ -211,8 +223,8 @@
 
                     <div class="content-class">内容：</div>
                     <div class="b"><input id="content" type="text" class="am-modal-prompt-input"></div>
-                    <div>是否显示： </div>
-                    <div class="layui-input-block">
+                    <div class="content-class">是否显示：</div>
+                    <div class="radio-b">
                         <input type="radio" name="sex" value="0" title="显示" checked="">显示</input>
                         <input type="radio" name="sex" value="1" title="不显示">不显示</input>
                     </div>
@@ -430,6 +442,7 @@
         </div>
     </div>
 </div>
+
 
 <!--手机适配显示左侧按钮-->
 <a href="#" class="am-icon-btn am-icon-th-list am-show-sm-only admin-menu"

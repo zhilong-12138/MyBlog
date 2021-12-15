@@ -963,7 +963,8 @@ function updateRewardDelBtn() {
 
 //点击轮播公告
 $('.superAdminList .announcementManagement').click(function () {
-    getAnnouncementManagement(1);
+    $('#layui-iframe').css("display", "block");
+    //getAnnouncementManagement(1);
 });
 
 //获得轮播公告数据

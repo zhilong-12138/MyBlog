@@ -16,6 +16,6 @@ import java.util.List;
 @Repository
 public interface AnnouncementMapper {
 
-    @Select("select id,content,show_status as showStatus,gmt_create as gmtCreate  from announcement where show_status = 0 and is_deleted = 0 order by id desc")
+    @Select("select id,content,show_status as showStatus,gmt_create as gmtCreate from announcement where is_deleted = 0 order by id desc")
     List<Announcement> findAll();
 }
