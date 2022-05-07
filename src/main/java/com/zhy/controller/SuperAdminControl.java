@@ -1,5 +1,6 @@
 package com.zhy.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.zhy.aspect.annotation.PermissionCheck;
 import com.zhy.constant.CodeType;
 import com.zhy.model.FriendLink;
@@ -11,10 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -375,26 +373,16 @@ public class SuperAdminControl {
 
     /**
      * 获得轮播公告数据
-     *
-     * @param rows
-     * @param pageNum
      * @return
      */
     @PostMapping(value = "/getAnnouncementManagement", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getAnnouncementManagement(@RequestParam("rows") int rows,
-                                            @RequestParam("pageNum") int pageNum) {
-        try {
-            DataMap<?> data = announcementService.findAll(rows, pageNum);
-            return JsonResult.build(data).toJSON();
-        } catch (Exception e) {
-            log.error("Get article management exception", e);
-        }
-        return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
+    public PageResult<?> getAnnouncementManagement() {
+        PageResult<?> result = announcementService.listAnnouncement(1, 1);
+        log.info("result->cnm" + JSON.toJSONString(result));
+        return result;
     }
 
-    @GetMapping(value = "/layui", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @PermissionCheck(value = "ROLE_SUPERADMIN")
+    @GetMapping(value = "/layui")
     public ModelAndView layui() {
         ModelAndView m = new ModelAndView();
         m.setViewName("layui");

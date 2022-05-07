@@ -1,6 +1,7 @@
 package com.zhy.service;
 
 import com.zhy.utils.DataMap;
+import com.zhy.utils.PageResult;
 
 /**
  * @author zhiLong
@@ -10,5 +11,8 @@ import com.zhy.utils.DataMap;
 public interface AnnouncementService {
 
     DataMap<?> findAll(int rows, int pageNum);
+
+    PageResult<?> listAnnouncement(int pageIndex,int pageSize);
+
 
 }

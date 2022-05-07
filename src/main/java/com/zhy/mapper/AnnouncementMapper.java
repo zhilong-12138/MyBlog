@@ -18,4 +18,10 @@ public interface AnnouncementMapper {
 
     @Select("select id,content,show_status as showStatus,gmt_create as gmtCreate from announcement where is_deleted = 0 order by id desc")
     List<Announcement> findAll();
+
+    @Select("select id,content,show_status as showStatus,gmt_create as gmtCreate from announcement where is_deleted = 0 order by id desc")
+    List<Announcement> listAnnouncement(int pageIndex, int pageSize);
+
+    @Select("select count(id) from announcement where is_deleted = 0")
+    int countAnnouncement();
 }

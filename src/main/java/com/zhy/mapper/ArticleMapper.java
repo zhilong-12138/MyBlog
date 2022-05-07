@@ -34,7 +34,7 @@ public interface ArticleMapper {
     @Select("select articleId,articleTitle from article where articleId=#{articleId}")
     Article findArticleByArticleId(@Param("articleId") long articleId);
 
-    @Select("select articleId,originalAuthor,articleTags,articleTitle,articleType,publishDate,originalAuthor,articleCategories,articleTabloid,likes from article order by id desc")
+    @Select("select articleId,originalAuthor,articleTags,articleTitle,articleType,publishDate,originalAuthor,articleCategories,articleTabloid,likes from article where is_deleted = 0 order by id desc")
     List<Article> findAllArticles();
 
     @Select("select articleId from article order by id desc limit 1")

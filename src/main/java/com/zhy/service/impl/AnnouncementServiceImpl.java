@@ -9,10 +9,12 @@ import com.zhy.model.Article;
 import com.zhy.service.AnnouncementService;
 import com.zhy.utils.DataMap;
 import com.zhy.utils.DateUtil;
+import com.zhy.utils.PageResult;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,5 +56,15 @@ public class AnnouncementServiceImpl implements AnnouncementService {
         returnJson.put("pageInfo", pageJson);
 
         return DataMap.success().setData(returnJson);
+    }
+
+    @Override
+    public PageResult<?> listAnnouncement(int pageIndex, int pageSize) {
+        List<Announcement> announcementList = announcementMapper.listAnnouncement(pageIndex, pageSize);
+        if (CollectionUtils.isEmpty(announcementList)) {
+            return PageResult.success(new ArrayList<>());
+        }
+        int count = announcementMapper.countAnnouncement();
+        return PageResult.success(announcementList, count);
     }
 }

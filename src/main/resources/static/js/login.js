@@ -129,10 +129,10 @@
                 },
                 success:function (data) {
                     if(parseInt(data['status']) == 0) {
-                        alert("短信验证码发送成功");
+                        alert("验证码发送成功");
                         timeCount();
                     } else {
-                        alert("短信验证码发送异常");
+                        alert("验证码发送异常");
                     }
                 },
                 error:function () {

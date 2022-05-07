@@ -47,9 +47,9 @@ public class UserServiceImpl implements UserService {
             return DataMap.fail(CodeType.PHONE_EXIST);
         }
         if("male".equals(user.getGender())){
-            user.setAvatarImgUrl("https://zhy-myblog.oss-cn-shenzhen.aliyuncs.com/public/user/avatar/noLogin_male.jpg");
+            user.setAvatarImgUrl("http://zhilong.cafe:9000/zhilongblog/noLogin_male.jpeg");
         } else {
-            user.setAvatarImgUrl("https://zhy-myblog.oss-cn-shenzhen.aliyuncs.com/public/user/avatar/noLogin_female.jpg");
+            user.setAvatarImgUrl("http://zhilong.cafe:9000/zhilongblog/noLogin_female.jpeg");
         }
         userMapper.save(user);
         int userId = userMapper.findUserIdByPhone(user.getPhone());
