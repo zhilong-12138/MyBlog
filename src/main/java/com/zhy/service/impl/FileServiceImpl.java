@@ -40,7 +40,6 @@ public class FileServiceImpl implements FileService {
     @Override
     public String upload(InputStream inputStream, String fileName, boolean img) {
         try {
-            log.info("endpoint->{},accessKeyId->{},accessKeySecret->{}", ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
             MinioClient minioClient =
                     MinioClient.builder()
                             .endpoint(ENDPOINT)

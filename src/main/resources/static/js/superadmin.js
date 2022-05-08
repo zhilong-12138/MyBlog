@@ -5,7 +5,7 @@ var friendLinkId = "";
 
 $('.superAdminList .superAdminClick').click(function () {
     var flag = $(this).attr('class').substring(16);
-    $('#statistics,#articleManagement,#articleThumbsUp,#articleCategories,#friendLink,#rewardManagement,#userFeedback,#privateWord,#announcementManagement').css("display", "none");
+    $('#statistics,#articleManagement,#articleThumbsUp,#articleCategories,#uploadImages,#friendLink,#rewardManagement,#userFeedback,#privateWord,#announcementManagement').css("display", "none");
     $("#" + flag).css("display", "block");
 });
 
@@ -798,6 +798,17 @@ $('.superAdminList .articleThumbsUp').click(function () {
 $('.superAdminList .articleCategories').click(function () {
     getArticleCategories();
 });
+
+//点击上传图片
+$('.superAdminList .uploadImages').click(function () {
+    getUploadImages();
+});
+
+//获得文章分类信息
+function getUploadImages() {
+
+}
+
 //点击友链管理
 $('.superAdminList .friendLink').click(function () {
     $.ajax({

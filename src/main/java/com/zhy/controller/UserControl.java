@@ -2,12 +2,10 @@ package com.zhy.controller;
 
 import com.zhy.aspect.annotation.PermissionCheck;
 import com.zhy.constant.CodeType;
+import com.zhy.constant.ResultCode;
 import com.zhy.model.User;
 import com.zhy.service.*;
-import com.zhy.utils.DataMap;
-import com.zhy.utils.FileUtil;
-import com.zhy.utils.JsonResult;
-import com.zhy.utils.TimeUtil;
+import com.zhy.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,10 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.security.Principal;
 
 /**
@@ -76,6 +74,22 @@ public class UserControl {
             log.error("Upload head picture exception", e);
         }
         return JsonResult.fail(CodeType.SERVER_EXCEPTION).toJSON();
+    }
+
+    @PostMapping(value = "/uploadHeadMinIo", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PermissionCheck(value = "ROLE_USER")
+    public Result<String> uploadHead(@RequestParam("file") MultipartFile file) throws IOException {
+
+        try {
+            String fileName = DateUtil.getTimestamp() + "x" + file.getSize();
+            byte[] byteArr = file.getBytes();
+            InputStream inputStream = new ByteArrayInputStream(byteArr);
+            String url = fileService.upload(inputStream, fileName, true);
+            return Result.success(url);
+        } catch (Exception e) {
+            log.error("Upload head picture exception", e);
+        }
+        return Result.error(ResultCode.APP_ALIYUN_OSS_ERROR);
     }
 
     /**
