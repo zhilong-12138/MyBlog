@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="css/plugs_paging.css">
     <link href="https://lib.baomitu.com/font-awesome/5.8.0/css/fontawesome.min.css" rel="stylesheet">
 
-    <link href="layui/css/layui.css" rel="stylesheet">
-    <script src="layui/js/layui.js"></script>
+    <link href="css/layui/layui.css" rel="stylesheet">
+    <script src="js/layui/layui.js"></script>
 
     <script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://lib.baomitu.com/amazeui/2.7.2/js/amazeui.min.js"></script>
@@ -200,7 +200,8 @@
                                     <img class="layui-upload-img" id="demo1">
                                     <p id="demoText"></p>
                                     <div class="layui-input-inline">
-                                        <input id="upload-input" type="tel" name="phone" autocomplete="off" class="layui-input">
+                                        <input id="upload-input" type="tel" name="phone" autocomplete="off"
+                                               class="layui-input">
                                     </div>
                                 </div>
                                 <div style="width: 95px;">
@@ -225,28 +226,10 @@
                                     <li class="am-active">公告管理</li>
                                 </ol>
                                 <div class="announcementManagementTable">
-                                    <iframe id="layui-iframe" src="/layui"
-                                            style="display: none;width: 100%;height: 1000px;">
+                                    <table class="layui-hide" id="layui-table-announcement" lay-filter="test"></table>
 
-                                    </iframe>
                                 </div>
 
-                                <!--<div class="announcementManagementTable">
-                                    <table class="table am-table am-table-bd am-table-striped admin-content-table  am-animation-slide-right">
-                                        <thead>
-                                        <tr>
-                                            <th>序号</th>
-                                            <th>公告内容</th>
-                                            <th>发布时间</th>
-                                            <th>是否显示</th>
-                                            <th>操作</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="tables">
-
-                                        </tbody>
-                                    </table>
-                                </div>-->
 
                             </div>
                         </div>
@@ -490,28 +473,29 @@
 <script src="js/plugs_paging.js"></script>
 <script src="js/superadmin.js"></script>
 <script>
-    layui.use(['upload', 'element', 'layer'], function(){
+    layui.use(['upload', 'element', 'layer'], function () {
         var $ = layui.jquery
-            ,upload = layui.upload
-            ,element = layui.element
-            ,layer = layui.layer;
+            , upload = layui.upload
+            , element = layui.element
+            , layer = layui.layer
+            , table = layui.table;
 
         //常规使用 - 普通图片上传
         var uploadInst = upload.render({
             elem: '#test1'
-            ,url: '/uploadHeadMinIo' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
-            ,before: function(obj){
+            , url: '/uploadHeadMinIo' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+            , before: function (obj) {
                 //预读本地文件示例，不支持ie8
-                obj.preview(function(index, file, result){
+                obj.preview(function (index, file, result) {
                     $('#demo1').attr('src', result); //图片链接（base64）
                 });
 
                 element.progress('demo', '0%'); //进度条复位
                 layer.msg('上传中', {icon: 16, time: 0});
             }
-            ,done: function(res){
+            , done: function (res) {
                 //如果上传失败
-                if(res.code > 0){
+                if (res.code > 0) {
                     return layer.msg('上传失败');
                 }
                 $('#upload-input').attr('value', res.data); //图片链接（base64）
@@ -519,20 +503,103 @@
                 //……
                 $('#demoText').html(''); //置空上传失败的状态
             }
-            ,error: function(){
+            , error: function () {
                 //演示失败状态，并实现重传
                 var demoText = $('#demoText');
                 demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                demoText.find('.demo-reload').on('click', function(){
+                demoText.find('.demo-reload').on('click', function () {
                     uploadInst.upload();
                 });
             }
             //进度条
-            ,progress: function(n, elem, e){
+            , progress: function (n, elem, e) {
                 element.progress('demo', n + '%'); //可配合 layui 进度条元素使用
-                if(n == 100){
+                if (n === 100) {
                     layer.msg('上传完毕', {icon: 1});
                 }
+            }
+        });
+
+        //执行一个 table 实例
+        table.render({
+            elem: '#layui-table-announcement'
+            , height: 420
+            , url: '/getAnnouncementManagement' //数据接口
+            , title: '用户表'
+            , page: true //开启分页
+            , toolbar: 'default' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , totalRow: true //开启合计行
+            , cols: [
+                [ //表头
+                    {type: 'checkbox', fixed: 'left'}
+                    , {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'}
+                    , {field: 'content', title: '公告内容', width: 80}
+                    , {field: 'showStatusName', title: '是否显示', width: 80}
+                    , {field: 'createTime', title: '创建时间', width: 200, sort: true}
+                ]
+            ]
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(test)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id)
+                , data = checkStatus.data; //获取选中的数据
+            switch (obj.event) {
+                case 'add':
+                    layer.msg('添加');
+                    break;
+                case 'update':
+                    if (data.length === 0) {
+                        layer.msg('请选择一行');
+                    } else if (data.length > 1) {
+                        layer.msg('只能同时编辑一个');
+                    } else {
+                        layer.alert('编辑 [id]：' + checkStatus.data[0].id);
+                    }
+                    break;
+                case 'delete':
+                    if (data.length === 0) {
+                        layer.msg('请选择一行');
+                    } else {
+                        layer.msg('删除');
+                    }
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'detail') {
+                layer.msg('查看操作');
+            } else if (layEvent === 'more') {
+                //下拉菜单
+                dropdown.render({
+                    elem: this //触发事件的 DOM 对象
+                    , show: true //外部事件触发即显示
+                    , data: [{
+                        title: '编辑'
+                        , id: 'edit'
+                    }, {
+                        title: '删除'
+                        , id: 'del'
+                    }]
+                    , click: function (menudata) {
+                        if (menudata.id === 'del') {
+                            layer.confirm('真的删除行么', function (index) {
+                                obj.del(); //删除对应行（tr）的DOM结构
+                                layer.close(index);
+                                //向服务端发送删除指令
+                            });
+                        } else if (menudata.id === 'edit') {
+                            layer.msg('编辑操作，当前行 ID:' + data.id);
+                        }
+                    }
+                    , align: 'right' //右对齐弹出（v2.6.8 新增）
+                    , style: 'box-shadow: 1px 1px 10px rgb(0 0 0 / 12%);' //设置额外样式
+                })
             }
         });
     });

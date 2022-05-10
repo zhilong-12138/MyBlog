@@ -12,7 +12,7 @@ public interface AnnouncementService {
 
     DataMap<?> findAll(int rows, int pageNum);
 
-    PageResult<?> listAnnouncement(int pageIndex,int pageSize);
+    PageResult<?> listAnnouncement(Integer page,Integer limit);
 
 
 }

@@ -59,11 +59,21 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
-    public PageResult<?> listAnnouncement(int pageIndex, int pageSize) {
-        List<Announcement> announcementList = announcementMapper.listAnnouncement(pageIndex, pageSize);
+    public PageResult<?> listAnnouncement(Integer page, Integer limit) {
+
+        List<Announcement> announcementList = announcementMapper.listAnnouncement(page, limit);
         if (CollectionUtils.isEmpty(announcementList)) {
             return PageResult.success(new ArrayList<>());
         }
+        announcementList.forEach(a -> {
+            if (a.getShowStatus().equals(0)) {
+                a.setShowStatusName("显示");
+            } else {
+                a.setShowStatusName("不显示");
+            }
+            a.setCreateTime(DateUtil.formatDate(a.getGmtCreate(),"yyyy-MM-dd HH:mm:ss"));
+        });
+
         int count = announcementMapper.countAnnouncement();
         return PageResult.success(announcementList, count);
     }

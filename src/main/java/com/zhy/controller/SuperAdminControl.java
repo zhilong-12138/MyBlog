@@ -81,9 +81,7 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/replyPrivateWord", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String replyPrivateWord(@AuthenticationPrincipal Principal principal,
-                                   @RequestParam("replyContent") String replyContent,
-                                   @RequestParam("replyId") String id) {
+    public String replyPrivateWord(@AuthenticationPrincipal Principal principal, @RequestParam("replyContent") String replyContent, @RequestParam("replyId") String id) {
         String username = principal.getName();
         try {
             DataMap data = privateWordService.replyPrivateWord(replyContent, username, Integer.parseInt(id));
@@ -103,8 +101,7 @@ public class SuperAdminControl {
      */
     @GetMapping(value = "/getAllFeedback", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getAllFeedback(@RequestParam("rows") int rows,
-                                 @RequestParam("pageNum") int pageNum) {
+    public String getAllFeedback(@RequestParam("rows") int rows, @RequestParam("pageNum") int pageNum) {
         try {
             DataMap data = feedBackService.getAllFeedback(rows, pageNum);
             return JsonResult.build(data).toJSON();
@@ -151,8 +148,7 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/getArticleManagement", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getArticleManagement(@RequestParam("rows") int rows,
-                                       @RequestParam("pageNum") int pageNum) {
+    public String getArticleManagement(@RequestParam("rows") int rows, @RequestParam("pageNum") int pageNum) {
         try {
             DataMap data = articleService.getArticleManagement(rows, pageNum);
             return JsonResult.build(data).toJSON();
@@ -187,8 +183,7 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/getArticleThumbsUp", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String getArticleThumbsUp(@RequestParam("rows") int rows,
-                                     @RequestParam("pageNum") int pageNum) {
+    public String getArticleThumbsUp(@RequestParam("rows") int rows, @RequestParam("pageNum") int pageNum) {
         try {
             DataMap data = articleLikesRecordService.getArticleThumbsUp(rows, pageNum);
             return JsonResult.build(data).toJSON();
@@ -248,8 +243,7 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/updateCategory", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String updateCategory(@RequestParam("categoryName") String categoryName,
-                                 @RequestParam("type") int type) {
+    public String updateCategory(@RequestParam("categoryName") String categoryName, @RequestParam("type") int type) {
         try {
             DataMap data = categoryService.updateCategory(categoryName, type);
             return JsonResult.build(data).toJSON();
@@ -279,9 +273,7 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/updateFriendLink", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String addFriendLink(@RequestParam("id") String id,
-                                @RequestParam("blogger") String blogger,
-                                @RequestParam("url") String url) {
+    public String addFriendLink(@RequestParam("id") String id, @RequestParam("blogger") String blogger, @RequestParam("url") String url) {
         try {
             FriendLink friendLink = new FriendLink(blogger, url);
             DataMap data;
@@ -317,9 +309,7 @@ public class SuperAdminControl {
      */
     @PostMapping(value = "/addReward", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @PermissionCheck(value = "ROLE_SUPERADMIN")
-    public String addReward(@RequestParam("file") MultipartFile file,
-                            HttpServletRequest request,
-                            Reward reward) {
+    public String addReward(@RequestParam("file") MultipartFile file, HttpServletRequest request, Reward reward) {
 
         try {
             //获得募捐时间
@@ -373,16 +363,19 @@ public class SuperAdminControl {
 
     /**
      * 获得轮播公告数据
+     *
      * @return
      */
-    @PostMapping(value = "/getAnnouncementManagement", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public PageResult<?> getAnnouncementManagement() {
-        PageResult<?> result = announcementService.listAnnouncement(1, 1);
+    @GetMapping(value = "/getAnnouncementManagement", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public PageResult<?> getAnnouncementManagement(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit) {
+        log.info("result->page:{},limit:{}", page, limit);
+        PageResult<?> result = announcementService.listAnnouncement(page, limit);
         log.info("result->cnm" + JSON.toJSONString(result));
         return result;
     }
 
     @GetMapping(value = "/layui")
+    @PermissionCheck(value = "ROLE_SUPERADMIN")
     public ModelAndView layui() {
         ModelAndView m = new ModelAndView();
         m.setViewName("layui");
