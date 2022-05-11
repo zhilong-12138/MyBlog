@@ -369,6 +369,12 @@ public class SuperAdminControl {
     @GetMapping(value = "/getAnnouncementManagement", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public PageResult<?> getAnnouncementManagement(@RequestParam("page") Integer page, @RequestParam("limit") Integer limit) {
         log.info("result->page:{},limit:{}", page, limit);
+        // 设置分页
+        int offset = 0;
+        if (page != null && limit > 0) {
+            offset = (page - 1) * limit;
+        }
+        page = offset;
         PageResult<?> result = announcementService.listAnnouncement(page, limit);
         log.info("result->cnm" + JSON.toJSONString(result));
         return result;
