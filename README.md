@@ -4,7 +4,7 @@
 
 可直接导入该项目于本地，修改配置文件中的数据库连接信息，导入附带数据库结构的SQL文件可直接生成所有表，项目中使用到的关于阿里云功能还需开发者自行前往阿里云进行相应功能开通。
 
-**当你克隆项目到本地后可使用邮箱：1356217823@qq.com，密码：123456进行登录，也可自行注册并将其修改为最高管理权限。**
+**当你克隆项目到本地后可使用邮箱：sad@qq.com，密码：123456进行登录，也可自行注册并将其修改为最高管理权限。**
 
 
 
@@ -60,7 +60,7 @@ config set requirepass redisroot
 #### 安装oss文件服务器
 
 ```
-docker pull minio/minio:RELEASE.2021-06-17T00-10-46Z
+docker pull minio/minio:RELEASE.2021-06-17T00-10-46Z 
 
 docker run -p 9090:9000 --name minio -e "MINIO_ACCESS_KEY=admin" -e "MINIO_SECRET_KEY=admin123456" -v /mydata/minio/data:/data   -v /mydata/minio/config:/root/.minio -d minio/minio server /data --console-address ":9000" --address ":9090"
 
@@ -90,7 +90,7 @@ Secret Key: hOqY5E8R0dx+Mlynj4RdPCTSz9Yq4x09MOmNu4S8
 # 基础镜像使用java
 FROM java:8
 # 作者
-MAINTAINER zzl <java229@gmail.com>
+MAINTAINER zzl <sad@gmail.com>  
 # VOLUME 指定了临时文件目录为/tmp。
 # 其效果是在主机 /var/lib/docker 目录下创建了一个临时文件，并链接到容器的/tmp
 VOLUME /tmp 
